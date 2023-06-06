@@ -17,8 +17,8 @@ public class Scanner {
         simbolos = new HashMap<>();
         simbolos.put("(", TipoToken.IZQ_PAR);
         simbolos.put(")", TipoToken.DER_PAR);
-        simbolos.put("{", TipoToken.DER_LLAVE);
-        simbolos.put("}", TipoToken.IZQ_LLAVE);
+        simbolos.put("{", TipoToken.IZQ_LLAVE);
+        simbolos.put("}", TipoToken.DER_LLAVE);
         simbolos.put(",", TipoToken.COMMA);
         simbolos.put(".", TipoToken.DOT);
         simbolos.put(";", TipoToken.SEMICOLON);
@@ -60,7 +60,7 @@ public class Scanner {
         cadena.put("\"", TipoToken.CADENA);
 
         numero = new HashMap<>();
-        //numero.put("#", TipoToken.NUMERO);
+        numero.put("#", TipoToken.NUMERO);
 
         comentarios = new HashMap<>();
         comentarios.put("//", TipoToken.COMMENT);
@@ -98,13 +98,15 @@ public class Scanner {
         Analizar el texto de entrada para extraer todos los tokens
         y al final agregar el token de fin de archivo
          */
-        int i=0;
+        int i=0, bandera1=0;
         //System.out.println(source.length());
 
         while(i<source.length()){
 
             //char c = source.charAt(i);
-            //System.out.println(i);
+            //System.out.println("i:" + i);
+            //System.out.println("lenght: " + source.length());
+            //System.out.println("char: " + source.charAt(i));
 
 
             //Operadores relacionales
@@ -121,29 +123,28 @@ public class Scanner {
                     }else if(source.charAt(i) == '>'){
                         tokens.add(new Token(TipoToken.NE,"<>", null,linea));
                         //i++;
-                    }else if(source.charAt(i) == ' '){
+                    }else{
                         tokens.add(new Token(TipoToken.LL,"<", null,linea));
+                        i--;
                     }
+
                 }
             }else if(source.charAt(i) == '='){
                 int temp = i;
                 temp++;
                 //System.out.println(i);
                 if(temp == source.length()){
-                    tokens.add(new Token(TipoToken.EQEQ,"=", null,linea));
+                        tokens.add(new Token(TipoToken.EQEQ,"=", null,linea));
+                        i++;
                     //System.out.println("asdf");
                 }else{
                     i++;
                     if(source.charAt(i) == '='){
                         tokens.add(new Token(TipoToken.EQ,"==", null,linea));
-                        //i++;
-                        //System.out.println("qwer");
-                    } else if(source.charAt(i) == ' '){
+                    }else{
                         tokens.add(new Token(TipoToken.EQEQ,"=", null,linea));
-                        //i++;
-                        //System.out.println("awsed");
                     }
-                    //System.out.println(i);
+                    i--;
                 }
             }else if(source.charAt(i) == '>'){
                 int temp = i;
@@ -174,10 +175,7 @@ public class Scanner {
                         tokens.add(new Token(oprel.get("!"),"!",null,linea));
                     }
                 }
-            }
-
-            // Simbolos
-            if(source.charAt(i) == '('){
+            }else if(source.charAt(i) == '('){// Simbolos
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -189,8 +187,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == ')'){
+            }else if(source.charAt(i) == ')'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -202,8 +199,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '{'){
+            }else if(source.charAt(i) == '{'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -215,12 +211,12 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '}'){
+            }else if(source.charAt(i) == '}'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
                     tokens.add(new Token(simbolos.get("}"),"}",null,linea));
+                    i++;
                 }else{
                     if(source.charAt(i) ==  '}'){
                         //tokens.add(new Token(TipoToken.NN,"!", null,linea));
@@ -228,8 +224,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == ','){
+            }else if(source.charAt(i) == ','){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -241,8 +236,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '.'){
+            }else if(source.charAt(i) == '.'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -254,12 +248,12 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == ';'){
+            }else if(source.charAt(i) == ';'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
                     tokens.add(new Token(simbolos.get(";"),";",null,linea));
+                    i++;
                 }else{
                     if(source.charAt(i) ==  ';'){
                         //tokens.add(new Token(TipoToken.NN,"!", null,linea));
@@ -267,8 +261,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '-'){
+            }else if(source.charAt(i) == '-'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -280,8 +273,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '+'){
+            }else if(source.charAt(i) == '+'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -293,8 +285,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            if(source.charAt(i) == '*'){
+            }else if(source.charAt(i) == '*'){
                 int temp = i;
                 temp++;
                 if(temp == source.length()){
@@ -306,23 +297,7 @@ public class Scanner {
                     }
                     //i++;
                 }
-            }
-            /*if(source.charAt(i) == '/'){
-                int temp = i;
-                temp++;
-                if(temp >= source.length()){
-                    tokens.add(new Token(simbolos.get("/"),"/",null,linea));
-                }else{
-                    if(source.charAt(i) ==  '/'){
-                        //tokens.add(new Token(TipoToken.NN,"!", null,linea));
-                        tokens.add(new Token(simbolos.get("/"),"/",null,linea));
-                    }
-                    //i++;
-                }
-            }*/
-
-            //Comentarios
-            if(source.charAt(i) == '/'){
+            }else if(source.charAt(i) == '/'){//Comentarios
 
                 int temp = i;
                 temp++;
@@ -360,10 +335,7 @@ public class Scanner {
                         //break;
                     }
                 }
-            }
-
-            //Cadena
-            if(source.charAt(i) == '"'){
+            }else if(source.charAt(i) == '"'){//Cadena
                 i++;
                 String var1 = "", var3 = "";
                 StringBuilder sb = new StringBuilder();
@@ -371,7 +343,7 @@ public class Scanner {
                 sb.append(var1).append("\"");
 
                 while(true){
-                    if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z')){
+                    if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z' || source.charAt(i) == ' ' )){
                         sb.append(var1).append(source.charAt(i));
                         sb1.append(var3).append(source.charAt(i));
                         //System.out.println(sb);
@@ -386,10 +358,7 @@ public class Scanner {
 
                 tokens.add(new Token(cadena.get("\""),var2,sb1,linea));
                 //System.out.println(var1);
-            }
-
-            //Numero
-            if(source.charAt(i) >= '0' && source.charAt(i) <= '9'){
+            }else if(source.charAt(i) >= '0' && source.charAt(i) <= '9'){//Numero
                 //i++;
                 String var1 = "";
                 StringBuilder sb2 = new StringBuilder();
@@ -452,33 +421,37 @@ public class Scanner {
 
                 tokens.add(new Token(numero.get("#"),var2,result,linea));
                 //System.out.println(var1);
-            }
-
-            //Palabras reservadas o Identificadores
-            if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z')){
+            }else if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z')){//Palabras reservadas o Identificadores
                 String var1 = "";
                 StringBuilder sb = new StringBuilder();
                 //StringBuilder sb1 = new StringBuilder();
                 //sb.append(var1).append("\"");
 
                 while(true){
+                    //System.out.println("num:"+source.charAt(i));
                     //System.out.println("i: "+ i);
                     int temp = i;
                     temp++;
                     if(temp == source.length()){//Revisar que no se pase del final del arreglo, despues de revisar la ultima letra
                         sb.append(var1).append(source.charAt(i));
+                        //i++;
                         break;
-                    }else if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z')){
+                    }else if((source.charAt(i) >= 'a' && source.charAt(i) <= 'z') || (source.charAt(i) >= 'A' && source.charAt(i) <= 'Z')||(source.charAt(i) >= '0' && source.charAt(i) <= '9')){
                         sb.append(var1).append(source.charAt(i));
                         //sb1.append(var3).append(source.charAt(i));
                         //System.out.println(sb);
+                        //System.out.println("num-:"+source.charAt(i));
+                        //System.out.println("i-: "+ i);
+
 
                         int temp1 = i;//Revisa que no se paso del final, despues de lo que ya aregramos.
                         temp1++;
-                        if((source.charAt(temp1) >= 'a' && source.charAt(temp1) <= 'z') || (source.charAt(temp1) >= 'A' && source.charAt(temp1) <= 'Z'))
+                        if((source.charAt(temp1) >= 'a' && source.charAt(temp1) <= 'z') || (source.charAt(temp1) >= 'A' && source.charAt(temp1) <= 'Z')||(source.charAt(temp1) >= '0' && source.charAt(temp1) <= '9'))
                             i++;
-                        else
+                        else {
+                            //i++;
                             break;
+                        }
                     }else{
                         break;
                     }
@@ -497,7 +470,21 @@ public class Scanner {
                     tokens.add(new Token(identificador.get("\"\""),var2,null,linea));
                 }
             }
-            i++;
+
+
+            //if(source.charAt(i) == ' ') i++;
+
+            int temp1 = i;
+            //temp1++;
+            if(temp1 < source.length()){
+                temp1++;
+                if(temp1 == source.length())
+                    i++;
+                else
+                    i++;
+            }
+
+
 
         }
 
