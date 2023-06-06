@@ -11,7 +11,7 @@ public enum TipoToken {
     EQ, LE, GE, LL, GG, NE, EQEQ, NN, NET,
 
     //Simbolos
-    IZQ_PAR, DER_PAR,DER_LLAVE,IZQ_LLAVE,COMMA,DOT,SEMICOLON,DASH,ADD,ASTERISK,SLASH,
+    IZQ_PAR, DER_PAR, DER_LLAVE, IZQ_LLAVE, COMMA, DOT, SEMICOLON, DASH, ADD, ASTERISK, SLASH,
 
     // Palabras clave:
     IF, CLASS, ELSE, FOR, PRINT, RETURN, TRUE, FALSE, WHILE, NULL, AND, FUN, OR, SUPER, THIS, VAR,
@@ -21,6 +21,9 @@ public enum TipoToken {
 
     //Comentario
     COMMENT,COMMENTCOMMENT,
+
+    //Numero
+    NUMERO,
 
     // Final de cadena
     EOF
